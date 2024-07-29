@@ -10,6 +10,14 @@ const Order = sequelize.define("order", {
       isFloat: { msg: "Total must be a float number" },
     },
   },
+  products: {
+    type: DataTypes.ARRAY(DataTypes.JSON),
+    allowNull: false,
+    unique: false,
+    validate: {
+      isArray: { msg: "products must be an array" },
+    },
+  },
 });
 
 export default Order;
