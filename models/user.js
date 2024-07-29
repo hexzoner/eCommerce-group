@@ -5,7 +5,7 @@ const User = sequelize.define("user", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: false,
     validate: {
       len: {
         args: [2, 30],
@@ -26,8 +26,8 @@ const User = sequelize.define("user", {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: true,
-    unique: false,
+    allowNull: false,
+    unique: true,
     validate: {
       isEmail: { msg: "Email must be a valid email address" },
     },
