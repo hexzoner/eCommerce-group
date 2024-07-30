@@ -1,17 +1,45 @@
-import { Product } from "../db/associations.js";
+import { Product, Category } from "../db/associations.js";
 
 export const getProducts = async (req, res) => {
-  res.json("get products");
+  const products = await Product.findAll({ include: Category });
+  res.json(products);
 };
+
 export const createProduct = async (req, res) => {
-  res.json("create product");
+  const {
+    body: { name, description, price },
+  } = req;
+
+  if (!name || !description || !price) res.status(400).json({ error: "Name, description and price are required" });
+  const product = await Product.create(req.body);
+  res.json(product);
 };
+
 export const getProductById = async (req, res) => {
-  res.json("get product by id");
+  const id = req.params.id;
+
+  const product = await Product.findByPk(id, { include: Category });
+  if (!product) res.status(404).json({ error: "Product not found." });
+
+  res.json(product);
 };
+
 export const updateProduct = async (req, res) => {
-  res.json("update product");
+  const {
+    body: { description, name, price },
+    params: { id },
+  } = req;
+  if (!description || !name || !price) return res.status(400).json({ error: "Description, name and price are required" });
+  const product = await Product.findByPk(id);
+  if (!product) return res.status(404).json({ error: "product not found" });
+  await product.update(req.body);
+  res.json(product);
 };
+
 export const deleteProduct = async (req, res) => {
-  res.json("delete product");
+  const id = req.params.id;
+  const product = await Product.findByPk(id);
+  if (!product) res.status(404).json({ error: "Product not found" });
+  await product.destroy();
+  res.json("Product " + id + " was deleted");
 };
