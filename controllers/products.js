@@ -1,12 +1,6 @@
 import { Product, Category } from "../db/associations.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
-function formatedResults(products) {
-  return products.map((product) => {
-    return formatedProduct(product);
-  });
-}
-
 function formatedProduct(product) {
   return {
     id: product.id,
