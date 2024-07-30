@@ -9,7 +9,7 @@ const User = sequelize.define("user", {
     validate: {
       len: {
         args: [2, 30],
-        msg: "Username must be between 2 and 30 characters",
+        msg: "Name must be between 2 and 30 characters",
       },
     },
   },
