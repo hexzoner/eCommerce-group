@@ -1,17 +1,39 @@
 import { Product } from "../db/associations.js";
 
 export const getProducts = async (req, res) => {
-  res.json("get products");
+  const products = await Product.findAll();
+  res.json(products);
 };
 export const createProduct = async (req, res) => {
-  res.json("create product");
+  const {
+    body: { name, description, price },
+  } = req;
+  const product  = await Product.create(req.body);
+  res.json(product);
 };
 export const getProductById = async (req, res) => {
-  res.json("get product by id");
-};
+  const {
+    params: { id },
+  } = req;
+  const product = await Product.findByPk(id);
+  res.json(product);
+}
 export const updateProduct = async (req, res) => {
-  res.json("update product");
+  const {
+    body: {name, description, price},
+    params: { id },
+  } = req;
+  const product = await Product.findByPk(id);
+  if (!product) return res.status(404).json({ error: "Product not found" });
+  await product.update(req.body);
+  res.json(product);
 };
 export const deleteProduct = async (req, res) => {
-  res.json("delete product");
+  const {
+    params: { id },
+  } = req;
+  const product = await Product.findByPk(id);
+  if (!product) return res.status(404).json({ error: "Product not found" });
+  await product.destroy();
+  res.json({ message: `Product with id: ${id} was deleted` });
 };
