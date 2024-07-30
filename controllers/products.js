@@ -1,4 +1,5 @@
 import { Product, Category } from "../db/associations.js";
+import { ErrorResponse } from "../utils/ErrorResponse.js";
 
 function formatedResults(products) {
   return products.map((product) => {
@@ -33,7 +34,7 @@ export const createProduct = async (req, res) => {
 export const getProductById = async (req, res) => {
   const id = req.params.id;
   const product = await Product.findByPk(id, { include: Category });
-  if (!product) res.status(404).json({ error: "Product not found." });
+  if (!product) throw new ErrorResponse("Product not found", 404);
   res.json(formatedProduct(product));
 };
 
@@ -42,7 +43,7 @@ export const updateProduct = async (req, res) => {
     params: { id },
   } = req;
   const product = await Product.findByPk(id);
-  if (!product) return res.status(404).json({ error: "product not found" });
+  if (!product) throw new ErrorResponse("Product not found", 404);
   await product.update(req.body);
   res.json(formatedProduct(product));
 };
@@ -50,7 +51,7 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   const id = req.params.id;
   const product = await Product.findByPk(id);
-  if (!product) res.status(404).json({ error: "Product not found" });
+  if (!product) throw new ErrorResponse("Product not found", 404);
   await product.destroy();
   res.json("Product " + id + " was deleted successfully");
 };

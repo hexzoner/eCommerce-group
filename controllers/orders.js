@@ -1,5 +1,6 @@
 import { Order, Product } from "../db/associations.js";
 import OrderProduct from "../models/orderProduct.js";
+import { ErrorResponse } from "../utils/ErrorResponse.js";
 
 export const getOrders = async (req, res) => {
   const orders = await Order.findAll({ include: Product });
@@ -50,7 +51,7 @@ export const createOrder = async (req, res) => {
 export const getOrderById = async (req, res) => {
   const id = req.params.id;
   const order = await Order.findByPk(id, { include: Product });
-  if (!order) res.status(404).json("Order not found");
+  if (!order) throw new ErrorResponse("Order not found", 404);
 
   const response = {
     id: order.id,
@@ -72,7 +73,7 @@ export const updateOrder = async (req, res) => {
   const id = req.params.id;
   const products = req.body.products;
   const order = await Order.findByPk(id);
-  if (!order) res.status(404).json("Order not found");
+  if (!order) throw new ErrorResponse("Order not found", 404);
   order.update(req.body);
 
   // Remove existing products in the order
@@ -93,7 +94,7 @@ export const updateOrder = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   const id = req.params.id;
   const order = await Order.findByPk(id);
-  if (!order) res.status(404).json("Order not found");
+  if (!order) throw new ErrorResponse("Order not found", 404);
   await order.destroy();
   res.json("Order " + id + " deleted successfully");
 };
