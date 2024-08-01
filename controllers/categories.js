@@ -1,12 +1,4 @@
 import { Category } from "../db/associations.js";
-import { ErrorResponse } from "../utils/ErrorResponse.js";
-
-function formatedCategory(category) {
-  return {
-    id: category.id,
-    name: category.name,
-  };
-}
 
 export const getCategories = async (req, res) => {
   const categories = await Category.findAll({});

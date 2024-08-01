@@ -1,15 +1,4 @@
 import { Product, Category } from "../db/associations.js";
-import { ErrorResponse } from "../utils/ErrorResponse.js";
-
-function formatedProduct(product) {
-  return {
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    categoryId: product.categoryId,
-  };
-}
 
 export const getProducts = async (req, res) => {
   const products = await Product.findAll();
