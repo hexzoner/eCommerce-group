@@ -1,10 +1,13 @@
 export default function errorHandler(err, req, res, next) {
-  process.env.NODE_ENV !== "production" && console.error(err.stack);
+  process.env.NODE_ENV !== "production" && console.error(err);
+  let errorMessage = err.message;
+
+  // if (err.errors && err.errors[0].message) errorMessage = err.errors[0].message;
 
   const statusCode = err.statusCode || 500;
 
   res.status(statusCode).json({
-    message: err.message,
+    message: errorMessage,
     error: err.name,
   });
 }
