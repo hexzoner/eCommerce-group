@@ -1,4 +1,4 @@
-import { Product, Category } from "../db/associations.js";
+import { Product } from "../db/associations.js";
 
 export const getProducts = async (req, res) => {
   const products = await Product.findAll();

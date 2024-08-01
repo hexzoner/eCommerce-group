@@ -20,7 +20,7 @@ const User = sequelize.define("user", {
     validate: {
       len: {
         args: [4, 30],
-        msg: "Password must be between 4 and 30 characters",
+        msg: "Password must be between 4 and 40 characters",
       },
     },
   },

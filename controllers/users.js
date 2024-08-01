@@ -23,6 +23,7 @@ export const createUser = async (req, res) => {
 
   const user = await User.create(req.body);
 
+  // Sending only the fields id, name, and email
   res.json({ id: user.id, name: user.name, email: user.email });
 };
 
