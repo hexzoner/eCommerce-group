@@ -76,5 +76,3 @@ DELETE /products/{id}: Delete a specific product by ID - done
 {
 "message": "Product deleted successfully"
 }
-
-joi validation
