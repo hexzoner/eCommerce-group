@@ -10,18 +10,23 @@ export const getProducts = async (req, res) => {
         categoryId: categoryId,
       },
     });
-    const results = products.map((prd) => {
-      return {
-        id: prd.id,
-        name: prd.name,
-        description: prd.description,
-        price: prd.price,
-        categoryId: prd.categoryId,
-      };
-    });
-    res.json(results);
+    if (products.length === 0) {
+      // If no products found with the given categoryId, send back a message
+      res.json({ message: `categoryId: ${categoryId} doesn't exists` });
+    } else {
+      const results = products.map((prd) => {
+        return {
+          id: prd.id,
+          name: prd.name,
+          description: prd.description,
+          price: prd.price,
+          categoryId: prd.categoryId,
+        };
+      });
+      res.json(results);
+    }
   } else {
-    // If no categoryID is provided, return all products
+    // If no categoryId is provided, return all products
     const products = await Product.findAll();
     const results = products.map((prd) => {
       return {
@@ -55,7 +60,11 @@ export const getProductById = async (req, res) => {
     params: { id },
   } = req;
   const product = await Product.findByPk(id);
-  res.json(product);
+  if (product !== null) {
+    res.json(product);
+  } else {
+    res.json({ message: `product with id: ${id} doesn't exist` });
+  }
 };
 export const updateProduct = async (req, res) => {
   const {
