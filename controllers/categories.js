@@ -12,10 +12,8 @@ export const createCategory = async (req, res) => {
   if (!name) return res.status(400).json({ error: "Name is required" });
   const category = await Category.create({
     name,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   });
-  res.json(category);
+  res.json({ id: category.id, name: category.name });
 };
 
 export const getCategoryById = async (req, res) => {
@@ -32,7 +30,8 @@ export const updateCategory = async (req, res) => {
     body: { name },
     params: { id },
   } = req;
-  if (!name || !id) return res.status(400).json({ error: "Name and Id are required" });
+  if (!name || !id)
+    return res.status(400).json({ error: "Name and Id are required" });
   const category = await Category.findByPk(id);
   if (!category) return res.status(404).json({ error: "Category not found" });
   await category.update({
@@ -50,7 +49,8 @@ export const deleteCategory = async (req, res) => {
   if (!category) return res.status(404).json({ error: "Category not found" });
 
   const products = await category.getProducts();
-  if (products.length) return res.status(403).json({ error: "Category not deleted" });
+  if (products.length)
+    return res.status(403).json({ error: "Category not deleted" });
 
   await category.destroy();
   res.json({ message: "Category " + category.name + " deleted" });
